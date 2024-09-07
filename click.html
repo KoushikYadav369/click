@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koushik's Monitor</title>
+    <style>
+        /* Basic styling for body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            padding-top: 20px;
+            transition: 0.5s;
+        }
+
+        /* Sidebar links */
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        /* Sidebar hover effect */
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        /* Main content styling */
+        .main {
+            margin-left: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            flex-grow: 1;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Night sky background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, #001d4c, #000);
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        /* Twinkling stars effect */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://www.transparenttextures.com/patterns/tiny-stars.png');
+            z-index: -2;
+            animation: twinkling 2s infinite ease-in-out;
+        }
+
+        /* Stars animation */
+        @keyframes twinkling {
+            0% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Moving planets and stars */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, #f5d142, #f00);
+            z-index: -1;
+            animation: movePlanet 30s infinite linear;
+        }
+
+        /* Planet animation */
+        @keyframes movePlanet {
+            0% {
+                transform: translate(0, 0) scale(0.6);
+            }
+            100% {
+                transform: translate(1200px, 600px) scale(0.8);
+            }
+        }
+
+        /* Planet style */
+        .planet1 {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+        }
+
+        /* Button styling */
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Styling for the click counter display */
+        #count {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        /* Styling for check message */
+        #checkMessage {
+            display: none;
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+            text-align: left;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar with Check option -->
+    <div class="sidebar">
+        <a href="#" id="checkClick">Check</a>
+    </div>
+
+    <!-- Main content for button and rotating background -->
+    <div class="main">
+        <h1>Koushik's Monitor</h1>
+        <button id="counterButton">Click me!</button>
+        <div id="count">Clicked 0 times</div>
+        <div id="checkMessage"></div>
+
+        <!-- Planets -->
+        <div class="planet planet1"></div>
+    </div>
+
+    <script>
+        let count = 0;
+        const button = document.getElementById('counterButton');
+        const countDisplay = document.getElementById('count');
+        const checkLink = document.getElementById('checkClick');
+        const checkMessage = document.getElementById('checkMessage');
+
+        // Array to store click timestamps
+        let clickTimestamps = [];
+
+        // Update click counter and timestamps when button is clicked
+        button.addEventListener('click', () => {
+            count++;
+            const now = new Date();
+            const timestamp = now.toLocaleTimeString();
+            clickTimestamps.push(timestamp);
+            countDisplay.textContent = `Clicked ${count} times`;
+        });
+
+        // Show check message with timestamps when "Check" in the sidebar is clicked
+        checkLink.addEventListener('click', () => {
+            let message = `You have clicked the button ${count} times.`;
+            if (clickTimestamps.length > 0) {
+                message += `<br><br>Click times:<br>${clickTimestamps.join('<br>')}`;
+            }
+            checkMessage.innerHTML = message;
+            checkMessage.style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
