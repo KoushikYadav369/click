@@ -12,6 +12,7 @@
             height: 100vh;
             display: flex;
             overflow: hidden;
+            position: relative;
         }
 
         /* Sidebar styling */
@@ -24,6 +25,7 @@
             background-color: #111;
             padding-top: 20px;
             transition: 0.5s;
+            z-index: 1;
         }
 
         /* Sidebar links */
@@ -53,31 +55,30 @@
             color: white;
             text-align: center;
             position: relative;
+            z-index: 2;
         }
 
         /* Night sky background */
-        body::before {
-            content: '';
+        .background {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: radial-gradient(circle at 50% 50%, #001d4c, #000);
-            z-index: -3;
+            z-index: 0;
             overflow: hidden;
         }
 
         /* Twinkling stars effect */
-        body::after {
-            content: '';
+        .stars {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: url('https://www.transparenttextures.com/patterns/tiny-stars.png');
-            z-index: -2;
+            z-index: 0;
             animation: twinkling 2s infinite ease-in-out;
         }
 
@@ -99,7 +100,7 @@
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle, #f5d142, #f00);
-            z-index: -1;
+            z-index: 1;
             animation: movePlanet 30s infinite linear;
         }
 
@@ -133,17 +134,12 @@
             cursor: pointer;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s;
+            z-index: 2;
         }
 
         /* Button hover effect */
         button:hover {
             transform: scale(1.1);
-        }
-
-        /* Styling for the click counter display */
-        #count {
-            margin-top: 20px;
-            font-size: 24px;
         }
 
         /* Styling for check message */
@@ -166,21 +162,23 @@
         <a href="#" id="checkClick">Check</a>
     </div>
 
+    <!-- Night sky background with stars -->
+    <div class="background">
+        <div class="stars"></div>
+        <!-- Planets -->
+        <div class="planet planet1"></div>
+    </div>
+
     <!-- Main content for button and rotating background -->
     <div class="main">
         <h1>Koushik's Monitor</h1>
         <button id="counterButton">Click me!</button>
-        <div id="count">Clicked 0 times</div>
         <div id="checkMessage"></div>
-
-        <!-- Planets -->
-        <div class="planet planet1"></div>
     </div>
 
     <script>
         let count = 0;
         const button = document.getElementById('counterButton');
-        const countDisplay = document.getElementById('count');
         const checkLink = document.getElementById('checkClick');
         const checkMessage = document.getElementById('checkMessage');
 
@@ -193,7 +191,6 @@
             const now = new Date();
             const timestamp = now.toLocaleTimeString();
             clickTimestamps.push(timestamp);
-            countDisplay.textContent = `Clicked ${count} times`;
         });
 
         // Show check message with timestamps when "Check" in the sidebar is clicked
